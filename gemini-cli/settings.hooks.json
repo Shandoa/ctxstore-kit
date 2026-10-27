@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {"hooks": [{"name": "ctxstore-ritual", "type": "command", "command": "CTXSTORE_CLIENT=gemini-cli bash __KIT__/session_start.sh", "timeout": 5000}]}
+    ],
+    "BeforeAgent": [
+      {"hooks": [{"name": "ctxstore-recall", "type": "command", "command": "CTXSTORE_CLIENT=gemini-cli bash __KIT__/recall_on_prompt.sh", "timeout": 10000}]}
+    ],
+    "BeforeTool": [
+      {"matcher": "store_fact", "hooks": [{"name": "ctxstore-secret-guard", "type": "command", "command": "CTXSTORE_CLIENT=gemini-cli bash __KIT__/secret_guard.sh", "timeout": 5000}]}
+    ],
+    "AfterTool": [
+      {"hooks": [{"name": "ctxstore-tally", "type": "command", "command": "CTXSTORE_CLIENT=gemini-cli python3 __KIT__/post_tool.py", "timeout": 5000}]},
+      {"matcher": "run_shell_command", "hooks": [{"name": "ctxstore-recall-on-error", "type": "command", "command": "CTXSTORE_CLIENT=gemini-cli bash __KIT__/recall_on_error.sh", "timeout": 10000}]}
+    ],
+    "AfterAgent": [
+      {"hooks": [{"name": "ctxstore-stop-check", "type": "command", "command": "python3 __KIT__/stop_check.py --client gemini-cli", "timeout": 10000}]}
+    ],
+    "PreCompress": [
+      {"hooks": [{"name": "ctxstore-compaction-ledger", "type": "command", "command": "CTXSTORE_CLIENT=gemini-cli bash __KIT__/compaction_ledger.sh", "timeout": 8000}]}
+    ]
+  }
+}

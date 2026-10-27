@@ -1,0 +1,9 @@
+# ctxstore kit — append to ~/.codex/config.toml
+# Lifecycle hooks are a Codex feature flag; the kit's hooks.json lives at
+# ~/.codex/hooks.json (Claude-shaped events and JSON, which Codex accepts).
+[features]
+hooks = true
+
+[mcp_servers.ctxstore]
+url = "https://mcp.ctxstore.ai/mcp"
+# http_headers = { Authorization = "Bearer emk_..." }   # or connect over OAuth

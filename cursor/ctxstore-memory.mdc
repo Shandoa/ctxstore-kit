@@ -1,0 +1,17 @@
+---
+description: ctxstore memory ritual — read before asking, write as you go, close every chapter
+alwaysApply: true
+---
+
+My persistent memory is the `ctxstore` MCP server. It arrives with the first tool
+result of every session.
+
+- Read before you ask: `search_facts` / `get_fact` before asking me to repeat
+  anything. Before claiming "only you can" or "I don't have access", search for a
+  standing grant first.
+- Write as you go: `store_fact` in the same turn a decision, learning, or state
+  change happens; stable colon-separated keys for things that change.
+- Close: `store_session_summary`, then `agent:<id>:self-note:closing`.
+- Secrets never enter the store; store pointers, values live in the keychain.
+- The kit's stop hook queues one follow-up when a turn did real work and stored
+  nothing, or claimed to be blocked without a memory read. Act on it, then stop.

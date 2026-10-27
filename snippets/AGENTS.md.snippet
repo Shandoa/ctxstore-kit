@@ -1,0 +1,16 @@
+## Memory (ctxstore)
+
+Persistent memory is the `ctxstore` MCP server; it arrives with the first tool
+result of every session.
+
+1. Read before you ask: `search_facts` / `get_fact` before asking the person to
+   repeat anything; before saying "only you can" or "I don't have access", search
+   for a standing grant.
+2. Write as you go: `store_fact` in the same turn a decision, learning, or state
+   change happens. Stable colon-separated keys for things that change.
+3. Close every chapter: `store_session_summary`, then
+   `agent:<id>:self-note:closing` (what shipped, what is open).
+4. Secrets never enter the store: pointers only, values stay in the keychain.
+
+With `features.hooks = true` the kit's hooks enforce 2 and the "blocked without
+looking" case; without hooks these four lines are the whole contract.

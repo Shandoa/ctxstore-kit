@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {"hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/session_start.sh", "timeout": 5}]},
+      {"matcher": "compact", "hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/session_start.sh", "timeout": 5}]}
+    ],
+    "UserPromptSubmit": [
+      {"hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/recall_on_prompt.sh", "timeout": 10}]}
+    ],
+    "PreToolUse": [
+      {"matcher": "mcp__ctxstore__store_fact|mcp__ctxstore__store_facts|ctxstore__store_fact|ctxstore__store_facts", "hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/secret_guard.sh", "timeout": 5}]},
+      {"matcher": "Write|Edit|MultiEdit|NotebookEdit|Bash", "hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/recall_before_build.sh", "timeout": 8}]}
+    ],
+    "PostToolUse": [
+      {"matcher": "*", "hooks": [{"type": "command", "command": "python3 __KIT__/post_tool.py", "timeout": 5}]}
+    ],
+    "PostToolUseFailure": [
+      {"matcher": "Bash", "hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/recall_on_error.sh", "timeout": 10}]}
+    ],
+    "Stop": [
+      {"hooks": [{"type": "command", "command": "python3 __KIT__/stop_check.py --client claude-code", "timeout": 10}]}
+    ],
+    "PreCompact": [
+      {"hooks": [{"type": "command", "command": "CTXSTORE_CLIENT=claude-code bash __KIT__/compaction_ledger.sh", "timeout": 8}]}
+    ]
+  }
+}

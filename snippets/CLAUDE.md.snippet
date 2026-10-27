@@ -1,0 +1,20 @@
+## Memory (ctxstore)
+
+My persistent memory is connected as the `ctxstore` MCP server. It arrives with the
+first tool result of every session; nothing needs fetching first.
+
+- **Read before you ask.** `search_facts` / `get_fact` before asking me to repeat
+  anything I may have told an agent before. Before saying "only you can" or
+  "I don't have access", search for a standing grant — I may already have given
+  you the capability.
+- **Write as you go.** `store_fact` in the same turn a decision, learning, or state
+  change happens. Short, searchable, a stable key when it will change later
+  (`project:<slug>:topic:current`). Colons separate key parts, never slashes.
+- **Close every chapter.** `store_session_summary`, then
+  `agent:<id>:self-note:closing` (what shipped, what is open) so the next session
+  starts where this one stopped.
+- **Scope.** If the work is one project, `switch_workspace('<slug>')` first.
+- **Secrets never enter the store.** Store a pointer (where it lives); values stay
+  in the keychain or vault.
+- Hooks enforce this: a turn that did real work and stored nothing is sent back
+  once; a "blocked" reply with zero memory reads is sent back once.

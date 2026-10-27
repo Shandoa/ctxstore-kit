@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {"command": "CTXSTORE_CLIENT=cursor bash __KIT__/session_start.sh", "timeout": 5}
+    ],
+    "beforeSubmitPrompt": [
+      {"command": "CTXSTORE_CLIENT=cursor bash __KIT__/recall_on_prompt.sh", "timeout": 10}
+    ],
+    "beforeMCPExecution": [
+      {"matcher": "store_fact", "command": "CTXSTORE_CLIENT=cursor bash __KIT__/secret_guard.sh", "timeout": 5}
+    ],
+    "afterMCPExecution": [
+      {"command": "python3 __KIT__/tool_tally.py --record", "timeout": 5}
+    ],
+    "postToolUse": [
+      {"command": "python3 __KIT__/tool_tally.py --record", "timeout": 5}
+    ],
+    "afterShellExecution": [
+      {"command": "python3 __KIT__/tool_tally.py --record", "timeout": 5}
+    ],
+    "afterAgentResponse": [
+      {"command": "python3 __KIT__/tool_tally.py --text", "timeout": 5}
+    ],
+    "stop": [
+      {"command": "python3 __KIT__/stop_check.py --client cursor", "timeout": 10, "loop_limit": 1}
+    ],
+    "preCompact": [
+      {"command": "CTXSTORE_CLIENT=cursor bash __KIT__/compaction_ledger.sh", "timeout": 8}
+    ]
+  }
+}
